@@ -1,0 +1,30 @@
+---
+
+- name: Add the OS specific varibles
+  include_vars: "{{ ansible_os_family }}.yaml"
+
+- name: Install carbon packages
+  yum:
+    pkg: "{{ item }}"
+  with_items: carbon_packages
+
+- name: Configure carbon configuration
+  template:
+    src: carbon.conf.j2
+    dest: "{{ carbon_config_path }}"
+  notify:
+    - Restart Carbon services
+
+- name: Configure storage schemas
+  template:
+    src: storage-schemas.conf.j2
+    dest: "{{ carbon_storage_schemas_path }}"
+  notify:
+    - Restart Carbon services
+
+- name: Make Carbon service running
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items: carbon_services

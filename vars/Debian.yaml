@@ -1,0 +1,5 @@
+---
+
+# Packages to install
+carbon_packages:
+  - graphite-carbon

@@ -1,0 +1,7 @@
+---
+
+- name: Restart Carbon services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items: carbon_services

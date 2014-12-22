@@ -1,0 +1,11 @@
+---
+
+# Default services to start
+carbon_services:
+  - carbon-cache
+
+# Default path to the main config file
+carbon_config_path: /etc/carbon/carbon.conf
+
+# Default path to the storage config file
+carbon_storage_schemas_path: /etc/carbon/storage-schemas.conf
