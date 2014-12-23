@@ -1,12 +1,25 @@
 ---
 
+- name: Test distribution
+  assert:
+    that: >
+      ansible_os_family == "RedHat" or
+      ansible_os_family == "Debian"
+
 - name: Add the OS specific varibles
   include_vars: "{{ ansible_os_family }}.yaml"
 
-- name: Install carbon packages
+- name: Install carbon packages for RedHat
   yum:
-    pkg: "{{ item }}"
+    name: "{{ item }}"
   with_items: carbon_packages
+  when: ansible_os_family == 'RedHat'
+
+- name: Install carbon packages for Debian
+  apt:
+    name: "{{ item }}"
+  with_items: carbon_packages
+  when: ansible_os_family == 'Debian'
 
 - name: Configure carbon configuration
   template:
