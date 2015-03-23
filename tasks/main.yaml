@@ -14,12 +14,20 @@
     name: "{{ item }}"
   with_items: carbon_packages
   when: ansible_os_family == 'RedHat'
+  notify:
+    - Restart Carbon services
+  tags:
+    - carbon_pkg
 
 - name: Install carbon packages for Debian
   apt:
     name: "{{ item }}"
   with_items: carbon_packages
   when: ansible_os_family == 'Debian'
+  notify:
+    - Restart Carbon services
+  tags:
+    - carbon_pkg
 
 - name: Configure carbon configuration
   template:
@@ -27,6 +35,8 @@
     dest: "{{ carbon_config_path }}"
   notify:
     - Restart Carbon services
+  tags:
+    - carbon_config
 
 - name: Configure storage schemas
   template:
@@ -34,6 +44,8 @@
     dest: "{{ carbon_storage_schemas_path }}"
   notify:
     - Restart Carbon services
+  tags:
+    - carbon_config
 
 - name: Make Carbon service running
   service:
